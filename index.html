@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>HackJS - Easel</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Maynard Russell">
+	<link rel="stylesheet" type="text/css" href="hackJS.css">
+	
+	<!-- Date: 2013-08-13 -->
+</head>
+<body onLoad="init();">
+	<script type="text/javascript" src="funWithEaselJS/EaselJS_v0.6.1/lib/easeljs-0.6.1.min.js"></script>
+	<script type='text/javascript'>
+		var circleOmega = { color:"#999", radius:100 };
+		var circleAlpha = { color:"#666", radius:50 };
+		var circleBravo = { color:"#333", radius:20 };
+		
+		function init() {
+			stage = new createjs.Stage("demoCanvas");
+			drawCircle(circleOmega);
+			drawCircle(circleAlpha);
+			drawCircle(circleBravo);
+			
+			createjs.Ticker.addEventListener("tick", updateFrame);
+			createjs.Ticker.setInterval(150);
+		}
+		
+		function drawCircle(params) {
+			circle = new createjs.Shape();
+			circle.graphics.beginFill(params.color).drawCircle(0, 0, params.radius);
+			circle.x = 100;
+			circle.y = 100;
+			stage.addChild(circle);
+		}
+		
+		function updateFrame() {
+			stage.removeChildAt(1);
+			stage.removeChildAt(2);
+			incrementRadius(circleAlpha);
+			incrementRadius(circleBravo);
+
+			if (circleAlpha.radius > circleBravo.radius) {
+				drawCircle(circleAlpha);
+				drawCircle(circleBravo);
+			} else {	
+				drawCircle(circleBravo);
+				drawCircle(circleAlpha);
+			}
+			
+			stage.update();
+		}
+		
+		function incrementRadius(c) {
+			c.radius *= 1.2;
+			if (c.radius > 80) c.radius = 10;
+		}
+	</script>
+	<canvas id="demoCanvas" width="500" height="300"></canvas>
+</body>
+</html>
